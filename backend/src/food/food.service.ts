@@ -50,17 +50,39 @@ export class FoodService {
     });
   }
 
-  async getPaginatedFoods(page: number, pageSize: number, category?: string) {
+  async getPaginatedFoods(page: number, pageSize: number, category?: string, keyword?: string) {
     const skip = (page - 1) * pageSize;
 
-    const where: any = category ? { category: category } : {};
+    const where: any = {
+      ...(category && { categoryId: parseInt(category) }),
 
-    return this.prisma.food.findMany({
+      ...(keyword && {
+        name: {
+          contains: keyword,
+          mode: 'insensitive',
+        },
+      }),
+    };
+
+    const totalItems = await this.prisma.food.count({
+      where,
+    });
+
+    const totalPages = Math.ceil(totalItems / pageSize);
+
+    const foods = await this.prisma.food.findMany({
       where,
       skip,
       take: pageSize,
     });
+
+    return {
+      foods,
+      totalPages,
+    };
   }
+
+
 
   async searchFood(keyword: string) {
     return this.prisma.food.findMany({

@@ -24,7 +24,7 @@ export class FoodController {
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles('ADMIN')
   @UseInterceptors(FileInterceptor('image', { ...multerConfig, ...multerOptions }))
   async createFood(
     @UploadedFile() file: Express.Multer.File,
@@ -72,10 +72,12 @@ export class FoodController {
     @Query('page') page: string,
     @Query('limit') limit: string,
     @Query('category') category: string,
+    @Query('search') keyword: string,
   ) {
+
     const pageNumber = parseInt(page, 10) || 1;
     const size = parseInt(limit, 10) || 10;
-    return this.foodService.getPaginatedFoods(pageNumber, size, category);
+    return this.foodService.getPaginatedFoods(pageNumber, size, category, keyword);
   }
 
   @Get('categories')

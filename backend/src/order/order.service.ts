@@ -45,15 +45,22 @@ export class OrderService {
     return order;
   }
 
-  async getOrders(userId: number, isAdmin: boolean, skip: number = 0, limit: number = 10) {
-    const whereCondition = isAdmin
-      ? {}
-      : { userId };
+  async getOrders(userId: number, isAdmin: boolean, page: number = 1, limit: number = 10) {
+    const skip = (parseInt(page.toString(), 10) - 1) * parseInt(limit.toString(), 10);
 
-    return this.prisma.order.findMany({
+
+    const whereCondition = isAdmin ? {} : { userId };
+
+    const totalOrders = await this.prisma.order.count({
+      where: whereCondition,
+    });
+
+    const totalPages = Math.ceil(totalOrders / limit);
+
+    const orders = await this.prisma.order.findMany({
       where: whereCondition,
       skip: skip,
-      take: limit,
+      take: parseInt(limit.toString(), 10),
       include: {
         items: {
           include: {
@@ -63,5 +70,11 @@ export class OrderService {
         user: true,
       },
     });
+
+    return {
+      orders,
+      totalPages,
+      currentPage: page,
+    };
   }
 }

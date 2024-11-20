@@ -1,7 +1,7 @@
 import { Body, Controller, Post, Get, Query, Req, UseGuards } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { JwtAuthGuard } from 'src/auth/jwt.guard';
-import { Role } from '@prisma/client'; // Assuming your Role enum is in Prisma model
+import { Role } from '@prisma/client'; 
 
 @Controller('order')
 export class OrderController {
@@ -20,12 +20,13 @@ export class OrderController {
   @Get()
   @UseGuards(JwtAuthGuard)
   async getOrders(
-    @Query('skip') skip: number = 0,
+    @Query('page') page: number = 0,
     @Query('limit') limit: number = 10,
     @Req() req: any
   ) {
     const userId = req.user.id;
     const isAdmin = req.user.role === Role.ADMIN;
-    return this.orderService.getOrders(userId, isAdmin, skip, limit);
+    
+    return this.orderService.getOrders(userId, isAdmin, page, limit);
   }
 }
