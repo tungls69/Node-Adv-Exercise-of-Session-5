@@ -1,0 +1,16 @@
+{
+  "name": "Exercise-of-Session-5",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/tungls69/Exercise-of-Session-5.git",
+  "author": "tungls69 <tungls69.ht@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start:nestjs": "cd nestjs-app && npm run start",
+    "start:nextjs": "cd nextjs-app && npm run dev",
+    "dev": "concurrently \"npm run start:nestjs\" \"npm run start:nextjs\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
