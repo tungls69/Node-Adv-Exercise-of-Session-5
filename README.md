@@ -3,13 +3,13 @@
 
 ## Backend
 
-1. **Chuyển vào thư mục `backend`:**
+#### 1. Chuyển vào thư mục `backend`:
 
 ```bash
 cd backend
 ```
 
-2. **Tạo file `.env`**
+#### 2. Tạo file `.env`
 
 Tạo một file .env trong thư mục backend và điền vào các thông tin sau:
 
@@ -29,13 +29,13 @@ PORT=8080
 `PORT`: Cổng mà backend sẽ chạy.
 
 
-3. **Cài đặt các dependencies:**
+#### 3. Cài đặt các dependencies:
 Sử dụng `yarn` để cài đặt tất cả các dependencies cho backend:
 ```bash
 yarn install
 ```
 
-4. **Cập nhật cơ sở dữ liệu và tạo Prisma Client:**
+#### 4. Cập nhật cơ sở dữ liệu và tạo Prisma Client:
 
 Chạy các lệnh sau để đồng bộ schema của Prisma với cơ sở dữ liệu:
 
@@ -44,7 +44,7 @@ yarn prisma db push --schema src/prisma/schema.prisma
 yarn prisma generate --schema src/prisma/schema.prisma
 ```
 
-5. **Chạy ứng dụng ở chế độ phát triển:**
+#### 5. Chạy ứng dụng ở chế độ phát triển:
 Sau khi cấu hình xong, bắt đầu backend bằng cách chạy lệnh sau:
 ```bash
 yarn start:dev
