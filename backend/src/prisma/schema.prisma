@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  role      Role     @default(USER)
+  Order     Order[]
+}
+
+model Food {
+  id          Int         @id @default(autoincrement())
+  name        String
+  description String?
+  price       Float
+  stock       Int
+  categoryId  Int
+  category    Category    @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime    @default(now())
+  OrderItem   OrderItem[]
+  image       String?
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String
+  foods Food[]
+}
+
+model Order {
+  id        Int         @id @default(autoincrement())
+  userId    Int
+  total     Float
+  createdAt DateTime    @default(now())
+  items     OrderItem[] // Related to OrderItem
+  user      User        @relation(fields: [userId], references: [id]) // Define the relation to User
+}
+
+model OrderItem {
+  id       Int   @id @default(autoincrement())
+  orderId  Int
+  foodId   Int
+  quantity Int
+  price    Float
+  order    Order @relation(fields: [orderId], references: [id])
+  food     Food  @relation(fields: [foodId], references: [id])
+}
+
+enum Role {
+  USER
+  ADMIN
+}
